@@ -19,6 +19,18 @@ const sendNotificationToAll = async (title, body) => {
 
     const message = {
       notification: { title, body },
+      data: { title, body, click_action: '/' },
+      android: { priority: 'high' },
+      webpush: {
+        headers: { Urgency: 'high', TTL: '86400' },
+        notification: {
+          title,
+          body,
+          icon: '/logo192.png',
+          requireInteraction: true,
+        },
+        fcmOptions: { link: '/' }
+      },
       tokens: tokens,
     };
 

@@ -14,12 +14,38 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  const notificationTitle = payload.notification.title;
+  console.log('[SW] Background message received:', payload);
+  
+  // Use webpush notification if available, fall back to notification, then data
+  const title = payload.notification?.title || payload.data?.title || 'Icon Tower';
+  const body = payload.notification?.body || payload.data?.body || 'You have a new update';
+
   const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/logo192.png' // Modify this to your icon
+    body: body,
+    icon: '/logo192.png',
+    badge: '/logo192.png',
+    tag: 'icon-tower-' + Date.now(), // Unique tag so notifications don't collapse
+    requireInteraction: true,        // Stay visible until user clicks
+    vibrate: [200, 100, 200],        // Vibrate pattern for mobile
+    data: { url: '/' }
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  return self.registration.showNotification(title, notificationOptions);
+});
+
+// Handle notification click - open the app
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // If app is already open, focus it
+      for (const client of clientList) {
+        if (client.url.includes('ic-project') && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise open a new tab
+      return clients.openWindow('/');
+    })
+  );
 });
