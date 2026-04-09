@@ -6,10 +6,15 @@ import axios from 'axios';
 const API_BASE = import.meta.env.VITE_API_BASE || 
     (() => {
         const host = window.location.hostname;
+        // Local dev
         if (host === 'localhost' || host.match(/^\d+\.\d+\.\d+\.\d+$/)) {
             return `http://${host}:5000/api`;
         }
-        return "https://icon-tower-management-zkfa.onrender.com/api";
+        // Production - try current origin first (for Render full-stack), then fallback to specific URL
+        if (host.includes('onrender.com')) {
+          return `${window.location.origin}/api`;
+        }
+        return "https://ic-project.onrender.com/api";
     })();
 
 const SERVER_BASE = API_BASE.replace('/api', '');
