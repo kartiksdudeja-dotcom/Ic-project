@@ -279,14 +279,14 @@ const Calendar = ({ logs, onDateSelect, selectedDate }) => {
     );
 };
 
-const Dashboard = ({ setPage }) => {
+const Dashboard = ({ setPage, lastUpdate }) => {
     const [stats, setStats] = useState({ totalViolations: 0, totalWarnings: 0, totalFines: 0, averageFine: 0, totalPaidAmount: 0, unpaidFines: 0 });
     const [history, setHistory] = useState([]);
 
     useEffect(() => {
         axios.get(`${API_BASE}/stats/dashboard`).then(res => setStats(res.data.stats));
         axios.get(`${API_BASE}/violations/history?limit=5`).then(res => setHistory(res.data.violations));
-    }, []);
+    }, [lastUpdate]);
 
     return (
         <div className="max-w-7xl mx-auto py-12 px-2">
@@ -478,7 +478,7 @@ const Scan = ({ onResult }) => {
     );
 };
 
-const Records = ({ onAction }) => {
+const Records = ({ onAction, lastUpdate }) => {
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(true);
     const today = new Date().toISOString().split('T')[0];
@@ -488,7 +488,7 @@ const Records = ({ onAction }) => {
 
     useEffect(() => {
         fetchRecords();
-    }, [filter]);
+    }, [filter, lastUpdate]);
 
     const fetchRecords = () => {
         let url = `${API_BASE}/violations/history?limit=50`;
@@ -885,7 +885,7 @@ const Tasks = ({ user }) => {
         } catch (err) { console.error('Error fetching tasks', err); }
     };
 
-    useEffect(() => { fetchTasks(); }, []);
+    useEffect(() => { fetchTasks(); }, [lastUpdate]);
 
     const addTask = async (e) => {
         e.preventDefault();
@@ -1088,7 +1088,7 @@ const Expenses = ({ user }) => {
         } catch (err) { console.error(err); }
     };
 
-    useEffect(() => { fetchExpenses(); }, []);
+    useEffect(() => { fetchExpenses(); }, [lastUpdate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1249,7 +1249,7 @@ const ChecklistComponent = ({ user }) => {
         fetchData(); 
         fetchTemplate();
         fetchHistory(); 
-    }, []);
+    }, [lastUpdate]);
 
     const toggleItem = (index) => {
         // LOCK: Only the Caretaker (Ravindra) can tick/untick tasks.
@@ -1513,13 +1513,17 @@ function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('NO_PARKING');
   const [notification, setNotification] = useState(null);
+  const [lastUpdate, setLastUpdate] = useState(0); // Trigger for real-time refresh
+
 
   useEffect(() => {
     if (user) {
         requestForToken(user.id, API_BASE);
         
         onMessageListener().then(payload => {
+            console.log("🔔 Real-time notification received:", payload);
             setNotification(payload.notification);
+            setLastUpdate(prev => prev + 1); // Trigger re-fetch in components
             setTimeout(() => setNotification(null), 5000); // Hide after 5s
         }).catch(err => console.log('failed: ', err));
     }
@@ -1567,12 +1571,12 @@ function App() {
       <SideNav current={page} setPage={setPage} user={user} />
       
       <main className="md:pl-64 pt-16 min-h-screen">
-        {page === 'dashboard' && <Dashboard setPage={setPage} />}
+        {page === 'dashboard' && <Dashboard setPage={setPage} lastUpdate={lastUpdate} />}
         {page === 'scan' && <Scan onResult={startViolationProcess} />}
-        {page === 'history' && <Records onAction={openReceipt} />}
-        {page === 'tasks' && <Tasks user={user} />}
-        {page === 'checklist' && <ChecklistComponent user={user} />}
-        {page === 'expenses' && <Expenses user={user} />}
+        {page === 'history' && <Records onAction={openReceipt} lastUpdate={lastUpdate} />}
+        {page === 'tasks' && <Tasks user={user} lastUpdate={lastUpdate} />}
+        {page === 'checklist' && <ChecklistComponent user={user} lastUpdate={lastUpdate} />}
+        {page === 'expenses' && <Expenses user={user} lastUpdate={lastUpdate} />}
         {page === 'violation' && <ViolationForm plate={selectedPlate} id={selectedId} defaultCategory={selectedCategory} onDone={() => setPage('history')} />}
       </main>
 
