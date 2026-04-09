@@ -1526,6 +1526,27 @@ function App() {
             setNotification(payload.notification);
             setLastUpdate(prev => prev + 1); // Trigger re-fetch in components
             setTimeout(() => setNotification(null), 5000); // Hide after 5s
+            
+            // Also show a system notification (Windows sidebar / phone tray)
+            if (Notification.permission === 'granted') {
+              try {
+                new Notification(payload.notification?.title || 'Icon Tower', {
+                  body: payload.notification?.body || 'New update',
+                  icon: '/logo192.png',
+                  tag: 'icon-tower-' + Date.now(),
+                  requireInteraction: false,
+                });
+              } catch (e) {
+                // Some browsers block Notification constructor, use SW instead
+                navigator.serviceWorker?.ready?.then(reg => {
+                  reg.showNotification(payload.notification?.title || 'Icon Tower', {
+                    body: payload.notification?.body || 'New update',
+                    icon: '/logo192.png',
+                    tag: 'icon-tower-' + Date.now(),
+                  });
+                });
+              }
+            }
         });
     }
   }, [user]);
