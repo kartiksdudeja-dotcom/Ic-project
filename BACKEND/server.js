@@ -12,13 +12,25 @@ const admin          = require('firebase-admin');
 
 // ─── Firebase Admin Init ──────────────────────────────────────────────────
 try {
-  const serviceAccount = require('./icontower-a56b0-firebase-adminsdk-fbsvc-b277c3a245.json');
+  let serviceAccount;
+  
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    // If running on Render/Production, use the environment variable
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    console.log('✅ Firebase: Using Service Account from Environment Variable');
+  } else {
+    // If running locally, use the JSON file
+    serviceAccount = require('./icontower-a56b0-firebase-adminsdk-fbsvc-b277c3a245.json');
+    console.log('✅ Firebase: Using Service Account from local JSON file');
+  }
+
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
   });
   console.log('🔥 Firebase Admin Initialized');
 } catch (err) {
   console.error('❌ Firebase Admin Init Error:', err.message);
+  console.log('💡 Tip: Ensure FIREBASE_SERVICE_ACCOUNT env var is set on Render.');
 }
 
 // ─── Routes ──────────────────────────────────────────────────────────────
