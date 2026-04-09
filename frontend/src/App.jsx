@@ -1613,18 +1613,29 @@ function App() {
 
       <BottomNav current={page} setPage={setPage} />
 
-      {/* Foreground Notification Toast */}
+      {/* Foreground Notification Toast - Premium Glassmorphic Design */}
       {notification && (
-        <div className="fixed top-20 right-4 z-[1000] animate-in slide-in-from-right-full duration-500">
-            <div className="bg-[#001e42] text-white p-4 rounded-2xl shadow-2xl border border-white/10 flex items-start gap-4 max-w-sm">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-primary">notifications_active</span>
+        <div className="fixed top-24 right-4 md:right-8 z-[1000] animate-in slide-in-from-right-full duration-700 ease-out">
+            <div className="bg-[#001e42]/90 backdrop-blur-2xl text-white p-5 rounded-[2rem] shadow-[0_20px_50px_rgba(0,30,66,0.3)] border border-white/10 flex items-center gap-5 max-w-sm relative group overflow-hidden">
+                {/* Progress bar timer */}
+                <div className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-blue-400 animate-out fade-out slide-out-to-left duration-[5000ms] w-full"></div>
+                
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+                    <span className="material-symbols-outlined text-white text-2xl animate-bounce">notifications</span>
                 </div>
-                <div>
-                    <h4 className="font-bold text-sm tracking-tight">{notification.title}</h4>
-                    <p className="text-xs text-[#c3c6d1] mt-1">{notification.body}</p>
+                
+                <div className="flex-1">
+                    <h4 className="font-black text-[13px] uppercase tracking-widest text-primary mb-1">Live Update</h4>
+                    <p className="text-sm font-bold text-white tracking-tight leading-tight">{notification.title}</p>
+                    <p className="text-[11px] text-[#c3c6d1] mt-1 font-medium">{notification.body}</p>
                 </div>
-                <button onClick={() => setNotification(null)} className="material-symbols-outlined text-[#c3c6d1] text-lg">close</button>
+                
+                <button 
+                  onClick={() => setNotification(null)} 
+                  className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors shrink-0"
+                >
+                    <span className="material-symbols-outlined text-[#c3c6d1] text-lg">close</span>
+                </button>
             </div>
         </div>
       )}

@@ -2,8 +2,6 @@ const express        = require('express');
 const cors           = require('cors');
 const morgan         = require('morgan');
 const compression    = require('compression');
-const cluster        = require('cluster');
-const os             = require('os');
 const path           = require('path');
 const https          = require('https');
 const connectDB      = require('./config/db');
@@ -133,28 +131,7 @@ function startServer(dbStatus) {
   });
 }
 
-// ─── Cluster Lifecycle & DB Init ──────────────────────────────────────────
-const isProduction = process.env.NODE_ENV === 'production';
-
-if (isProduction && cluster.isMaster) {
-  const numCPUs = os.cpus().length;
-  console.log(`\n💎 MASTER CLUSTER STARTED. Forking for ${numCPUs} CPUs...`);
-  console.log(`⚡ LOAD BALANCING ACTIVE`);
-
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
-
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`⚠️ Worker ${worker.process.pid} died. Reviving...`);
-    cluster.fork();
-  });
-} else {
-  // WORKER PROCESS (In production) OR SINGLE PROCESS (In development)
-  connectDB()
-    .then(() => {
-        const msg = isProduction ? `Online (Worker ${process.pid})` : 'Online';
-        startServer(msg);
-    })
-    .catch(() => startServer(`Offline – Local DB Fallback Active`));
-}
+// ─── Start Server ─────────────────────────────────────────────────────────
+connectDB()
+  .then(() => startServer('Online'))
+  .catch(() => startServer('Offline – Local DB Fallback Active'));
