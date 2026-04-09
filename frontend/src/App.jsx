@@ -871,7 +871,7 @@ const ViolationForm = ({ plate, id, defaultCategory, onDone }) => {
     );
 };
 
-const Tasks = ({ user }) => {
+const Tasks = ({ user, lastUpdate }) => {
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
@@ -1070,7 +1070,7 @@ const Tasks = ({ user }) => {
     );
 };
 
-const Expenses = ({ user }) => {
+const Expenses = ({ user, lastUpdate }) => {
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showForm, setShowForm] = useState(false);
@@ -1208,7 +1208,7 @@ const Expenses = ({ user }) => {
     );
 };
 
-const ChecklistComponent = ({ user }) => {
+const ChecklistComponent = ({ user, lastUpdate }) => {
     const today = new Date().toISOString().split('T')[0];
     const [data, setData] = useState({ items: [], status: 'Pending', photoProof: null });
     const [templateTasks, setTemplateTasks] = useState([]);
