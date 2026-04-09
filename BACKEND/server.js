@@ -49,7 +49,17 @@ connectDB();
 const app = express();
 
 // ─── Middleware ───────────────────────────────────────────────────────────
-app.use(cors({ origin: '*' }));
+// 1. CORS - MUST BE FIRST (Handles Verel and Preflight requests)
+app.use(cors({
+  origin: true,              // Echoes back the request origin (Better for cross-site)
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+}));
+
+// Handle Preflight (OPTIONS) requests globally
+app.options('*', cors()); 
+
 app.use(compression()); // Compress all responses for speed
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
