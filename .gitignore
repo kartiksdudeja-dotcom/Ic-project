@@ -1,0 +1,14 @@
+node_modules
+.env
+.DS_Store
+dist
+BACKEND/node_modules
+frontend/node_modules
+BACKEND/.env
+BACKEND/uploads/expenses/*
+BACKEND/uploads/proofs/*
+!BACKEND/uploads/.gitkeep
+frontend/dist
+.env.local
+.env.*.local
+BACKEND/icontower-a56b0-firebase-adminsdk-fbsvc-b277c3a245.json

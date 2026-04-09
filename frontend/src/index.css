@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#f3faff] text-[#071e27] font-['Inter'] antialiased selection:bg-[#d6e3ff] selection:text-[#001b3d];
+  }
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.scanning-line {
+    height: 3px;
+    background: linear-gradient(to right, transparent, #00d4ff, transparent);
+    box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff, inset 0 0 10px rgba(0, 212, 255, 0.5);
+    position: absolute;
+    width: 100%;
+    top: 0;
+    animation: scan 2.5s infinite ease-in-out;
+    z-index: 15;
+}
+
+@keyframes scan {
+    0%, 100% { 
+        top: 0%; 
+        opacity: 0.2; 
+        box-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff, inset 0 0 10px rgba(0, 212, 255, 0.2);
+    }
+    50% { 
+        top: 100%; 
+        opacity: 1;
+        box-shadow: 0 0 30px #00d4ff, 0 0 60px #00d4ff, inset 0 0 15px rgba(0, 212, 255, 0.8);
+    }
+}
+
+.glass-panel {
+    background: rgba(243, 250, 255, 0.8);
+    backdrop-filter: blur(12px);
+}
+
+.stat-card { transition: transform 0.2s; }
+.stat-card:hover { transform: translateY(-4px); }
+
+/* Custom scrollbar for a premium look */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f3faff;
+}
+::-webkit-scrollbar-thumb {
+  background: #c3c6d1;
+  border-radius: 10px;
+}
+
+/* Camera Button Animations */
+button:hover:not(:disabled) {
+  transition: all 0.2s ease;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.95) !important;
+  transition: transform 0.1s ease;
+}
+
+/* Capture Button Pulse */
+.w-20.h-20 {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+/* Smooth transitions */
+* {
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #001e42;
+}

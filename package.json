@@ -1,0 +1,14 @@
+{
+  "name": "parking-violation-system",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cd BACKEND && node server.js",
+    "build": "npm install && npm install --prefix BACKEND && npm install --prefix frontend && python3 -m pip install --upgrade pip setuptools wheel && python3 -m pip install -r BACKEND/plate_service/requirements.txt && npm run build --prefix frontend",
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run server --prefix BACKEND\"",
+    "dev-backend": "npm run dev --prefix BACKEND"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

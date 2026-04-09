@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dashboard | The Vigilant Editorial</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f3faff",
+                        "primary": "#001e42",
+                        "primary-container": "#003368",
+                        "secondary-container": "#fc820c",
+                        "on-surface-variant": "#43474f",
+                        "outline-variant": "#c3c6d1",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        .stat-card { transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-4px); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+    <!-- Top Nav -->
+    <nav class="fixed top-0 w-full z-50 bg-[#f3faff]/80 backdrop-blur-xl flex justify-between items-center px-6 py-3 shadow-[0px_20px_40px_rgba(7,30,39,0.06)]">
+        <span class="text-xl font-bold tracking-tighter text-[#001e42]">The Vigilant Editorial</span>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-8 text-[#43474f] font-medium text-sm">
+                <a class="text-[#001e42] border-b-2 border-[#001e42] pb-1" href="index.html">Dashboard</a>
+                <a class="text-[#43474f] hover:text-[#001e42]" href="scan.html">Scan</a>
+                <a class="text-[#43474f] hover:text-[#001e42]" href="history.html">History</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side Nav -->
+    <aside class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-[#e6f6ff] flex-col p-4 gap-2 pt-20">
+        <div class="mb-8 px-2">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden">
+                    <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgjHsSZoF8WYPBeXL6BT2LcYA-Frun91pKtIrccX0KBQFqfX9gt2fdtXfG575v6QxfGilOF9of1CMGWfaLQV4sDn3OlMboTRxSghHg2dunsflLIjhOmQUjbXq4wU4oBlURgQfPvHBQI7XtR5DjGT5dWQc0QggTI76m5YkoKaee7I9YNIFhOsg-Aj1Jwrpo0GEZGm2UF93CsIqAqG8RETuFNnJLaoeR3latfWSRUT1xppWdOwl4y_mTQvJhttKKo0m-xNhBHX2aCtPa"/>
+                </div>
+                <div>
+                    <p class="font-bold text-[#001e42] text-xs uppercase tracking-widest">Guardian-01</p>
+                    <p class="text-[10px] text-on-surface-variant">Active Duty</p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex flex-col gap-1">
+            <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary rounded-md shadow-sm" href="index.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="uppercase tracking-widest text-[11px] font-bold">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-[#43474f] hover:translate-x-1 transition-transform" href="scan.html">
+                <span class="material-symbols-outlined">qr_code_scanner</span>
+                <span class="uppercase tracking-widest text-[11px] font-bold">Scan</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 text-[#43474f] hover:translate-x-1 transition-transform" href="history.html">
+                <span class="material-symbols-outlined">history</span>
+                <span class="uppercase tracking-widest text-[11px] font-bold">History</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="md:pl-64 pt-24 px-6 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-4xl font-extrabold tracking-tight text-primary mb-8 uppercase">System Overview</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="stat-card bg-white p-6 rounded-2xl shadow-sm border border-outline-variant/10">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="material-symbols-outlined text-primary bg-blue-50 p-2 rounded-lg">description</span>
+                        <span class="text-[10px] font-bold text-green-600 uppercase tracking-widest">+12%</span>
+                    </div>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Total Violations</p>
+                    <h2 id="totalViolations" class="text-3xl font-black text-primary mt-1">0</h2>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-2xl shadow-sm border border-outline-variant/10">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="material-symbols-outlined text-orange-500 bg-orange-50 p-2 rounded-lg">warning</span>
+                        <span class="text-[10px] font-bold text-orange-600 uppercase tracking-widest">Active</span>
+                    </div>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Warnings Issued</p>
+                    <h2 id="totalWarnings" class="text-3xl font-black text-primary mt-1">0</h2>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-2xl shadow-sm border border-outline-variant/10">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="material-symbols-outlined text-red-500 bg-red-500/10 p-2 rounded-lg">account_balance_wallet</span>
+                        <span id="unpaidCount" class="text-[10px] font-bold text-red-600 uppercase tracking-widest">0 Unpaid</span>
+                    </div>
+                    <p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Fines Collected</p>
+                    <h2 id="totalFines" class="text-3xl font-black text-primary mt-1">0</h2>
+                </div>
+                <div class="stat-card bg-primary p-6 rounded-2xl shadow-lg text-white">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="material-symbols-outlined text-white bg-white/10 p-2 rounded-lg">payments</span>
+                        <span class="material-symbols-outlined text-white/50 text-sm">trending_up</span>
+                    </div>
+                    <p class="text-white/70 text-xs font-bold uppercase tracking-widest">Total Revenue</p>
+                    <h2 id="totalRevenue" class="text-3xl font-black mt-1">₹0</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-outline-variant/10">
+                    <h3 class="font-black text-xl mb-6 uppercase tracking-tight">Recent Activity</h3>
+                    <div id="recentActivity" class="space-y-4">
+                        <!-- Activity items -->
+                    </div>
+                    <a href="history.html" class="block text-center mt-8 text-xs font-bold uppercase tracking-[0.2em] text-primary hover:opacity-70 transition-opacity">View All History</a>
+                </div>
+                <div class="bg-surface-container-low p-8 rounded-2xl">
+                    <h3 class="font-black text-xl mb-6 uppercase tracking-tight">Quick Actions</h3>
+                    <div class="grid gap-4">
+                        <a href="scan.html" class="flex items-center gap-4 bg-primary text-white p-4 rounded-xl shadow-lg hover:scale-[1.02] transition-transform">
+                            <span class="material-symbols-outlined bg-white/10 p-2 rounded-lg">qr_code_scanner</span>
+                            <div class="text-left">
+                                <p class="font-bold text-sm">New Scan</p>
+                                <p class="text-[10px] text-white/60 uppercase">Detect plate wirelessly</p>
+                            </div>
+                        </a>
+                        <button onclick="alert('System status is optimal.')" class="flex items-center gap-4 bg-white p-4 rounded-xl border border-outline-variant/20 hover:bg-white/50 transition-colors text-primary text-left">
+                            <span class="material-symbols-outlined bg-blue-50 p-2 rounded-lg text-primary">health_and_safety</span>
+                            <div>
+                                <p class="font-bold text-sm">System Health</p>
+                                <p class="text-[10px] text-on-surface-variant uppercase">All nodes connected</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`${API_BASE}/stats/dashboard`);
+                const data = await res.json();
+                if (data.success) {
+                    const s = data.stats;
+                    document.getElementById('totalViolations').textContent = s.totalViolations;
+                    document.getElementById('totalWarnings').textContent = s.totalWarnings;
+                    document.getElementById('totalFines').textContent = s.totalFines;
+                    document.getElementById('unpaidCount').textContent = `${s.unpaidFines} Unpaid`;
+                    document.getElementById('totalRevenue').textContent = `₹${s.totalPaidAmount}`;
+                }
+
+                const historyRes = await fetch(`${API_BASE}/violations/history?limit=5`);
+                const historyData = await historyRes.json();
+                if (historyData.success) {
+                    const list = document.getElementById('recentActivity');
+                    list.innerHTML = '';
+                    historyData.violations.forEach(v => {
+                        const item = document.createElement('div');
+                        item.className = 'flex items-center justify-between p-4 bg-surface-container/30 rounded-xl';
+                        item.innerHTML = `
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary font-bold text-xs">${v.vehicleNumber.slice(-2)}</div>
+                                <div>
+                                    <p class="font-bold text-sm">${v.vehicleNumber}</p>
+                                    <p class="text-[10px] text-on-surface-variant uppercase">${new Date(v.createdAt).toLocaleTimeString()}</p>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full ${v.action === 'WARNING' ? 'bg-orange-50 text-orange-600' : 'bg-red-50 text-red-600'} text-[9px] font-black uppercase tracking-widest">
+                                ${v.action}
+                            </span>
+                        `;
+                        list.appendChild(item);
+                    });
+                }
+            } catch (err) {
+                console.error('Dashboard load failed:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>
