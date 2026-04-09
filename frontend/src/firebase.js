@@ -52,8 +52,13 @@ export const requestForToken = (userId, apiBase) => {
         console.log('No registration token available.');
       }
     }).catch((err) => {
-      console.log('An error occurred while retrieving token.', err);
+      console.error('❌ FCM Token retrieval failed:', err);
+      if (err.code === 'messaging/permission-blocked') {
+        console.warn('⚠️ Notifications are blocked by the user.');
+      }
     });
+  } else {
+    console.warn('❌ Service workers are not supported in this browser.');
   }
   return Promise.resolve(null);
 };

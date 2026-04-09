@@ -24,8 +24,16 @@ const sendNotificationToAll = async (title, body) => {
 
     const response = await admin.messaging().sendEachForMulticast(message);
     console.log(`✅ Push Sent: ${response.successCount} success, ${response.failureCount} failure.`);
+    
+    if (response.failureCount > 0) {
+      response.responses.forEach((resp, idx) => {
+        if (!resp.success) {
+          console.error(`❌ Token failure [${tokens[idx].slice(0, 10)}...]:`, resp.error.message);
+        }
+      });
+    }
   } catch (error) {
-    console.error('Notification Error:', error.message);
+    console.error('❌ Critical Notification Error:', error);
   }
 };
 
