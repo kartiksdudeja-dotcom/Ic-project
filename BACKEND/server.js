@@ -41,9 +41,6 @@ const checklistRoutes  = require('./routes/checklist');
 const expenseRoutes    = require('./routes/expenses');
 
 
-// ─── Connect to MongoDB ───────────────────────────────────────────────────
-connectDB();
-
 const app = express();
 
 // ─── Middleware ───────────────────────────────────────────────────────────
