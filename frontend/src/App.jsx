@@ -1520,13 +1520,23 @@ function App() {
     if (user) {
         requestForToken(user.id, API_BASE);
         
-        onMessageListener().then(payload => {
+        // Callback-based listener: catches ALL messages, not just the first
+        onMessageListener((payload) => {
             console.log("🔔 Real-time notification received:", payload);
             setNotification(payload.notification);
             setLastUpdate(prev => prev + 1); // Trigger re-fetch in components
             setTimeout(() => setNotification(null), 5000); // Hide after 5s
-        }).catch(err => console.log('failed: ', err));
+        });
     }
+  }, [user]);
+
+  // Polling fallback: refresh data every 30 seconds in case FCM doesn't work
+  useEffect(() => {
+    if (!user) return;
+    const interval = setInterval(() => {
+      setLastUpdate(prev => prev + 1);
+    }, 30000); // 30 seconds
+    return () => clearInterval(interval);
   }, [user]);
 
   // Persist user session
