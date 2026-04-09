@@ -16,7 +16,6 @@ parking-backend/
 │   ├── Violation.js       ← Single violation record schema
 │   └── Vehicle.js         ← Per-vehicle summary schema
 ├── routes/
-│   ├── plate.js           ← Number plate detection (Plate Recognizer API)
 │   ├── violations.js      ← Core logic: check / record / pay / history
 │   ├── vehicles.js        ← Vehicle profile + blacklist
 │   └── stats.js           ← Dashboard stats + monthly chart
@@ -43,7 +42,6 @@ cp .env.example .env
 ```
 Then open `.env` and fill in:
 - `MONGODB_URI` — from MongoDB Atlas (see below)
-- `PLATE_RECOGNIZER_API_KEY` — from platerecognizer.com (free)
 - `ADMIN_SECRET` — any random long string you make up
 
 ### Step 4: Get MongoDB Atlas free database
@@ -52,10 +50,6 @@ Then open `.env` and fill in:
 3. Click **Connect** → **Drivers**
 4. Copy the connection string and paste into MONGODB_URI in .env
 
-### Step 5: Get Plate Recognizer API key
-1. Go to https://platerecognizer.com
-2. Sign up free (2500 scans/month)
-3. Copy API key → paste into PLATE_RECOGNIZER_API_KEY in .env
 
 ### Step 6: Run locally
 ```bash
@@ -76,9 +70,6 @@ Server starts at http://localhost:5000
    - **Environment:** Node
 5. Add Environment Variables (copy from .env):
    - MONGODB_URI
-   - PLATE_RECOGNIZER_API_KEY
-   - FINE_AMOUNT
-   - COMPANY_NAME
    - ADMIN_SECRET
 6. Click **Deploy**
 
@@ -93,25 +84,6 @@ Your API will be live at: `https://yourapp.onrender.com`
 - Production: `https://yourapp.onrender.com`
 
 ---
-
-### 1. Detect Number Plate
-**POST** `/api/plate/detect`
-
-Upload vehicle photo → get plate number automatically.
-
-```
-Content-Type: multipart/form-data
-Body: photo (image file)
-```
-
-Response:
-```json
-{
-  "success": true,
-  "plateNumber": "MH12AB1234",
-  "confidence": 94
-}
-```
 
 ---
 
